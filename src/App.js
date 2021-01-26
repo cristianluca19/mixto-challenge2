@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Registro from "./registro/registro.jsx";
 import Inicio from "./inicio/inicio.jsx";
 

@@ -13,7 +13,7 @@ const initialState = {
 export function counterReducer(state = initialState, action) {
   switch (action.type) {
     case LOGIN:
-      const user = state.users.filter(user=> user.email === action.payload.email)
+      const user = state.users.filter(user=> user.email === action.payload.email && user.password === action.payload.password)
       if(user)
       return{
         ...state,

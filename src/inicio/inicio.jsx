@@ -1,8 +1,8 @@
-import React from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
+import * as action from '../redux/Action.js'
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -22,10 +22,9 @@ import { useStyles } from '../styles.js'
 
 export default function Inicio() {
   const classes = useStyles();
-  const login = useSelector((store) => store.login);
-  const dispatch = useDispatch();
-
-  const [values, setValues] = useState({});
+  const users = useSelector((store) => store.users);
+  const [login, setLogin]= useState()
+  const [values, setValues] = useState({email:'',password:''});
   const [valuePass, setValuePass] = useState({
     password: '',
     showPassword: false,
@@ -38,30 +37,30 @@ export default function Inicio() {
     event.preventDefault();
   };
 
-  const redireccionar = () => {
-    setTimeout(() => { window.location = "https://www.estudiomixto.com/" }, 3000);
-  }
   const handleChange = (event) => {
     event.preventDefault();
     const { id, value } = event.target;
     setValues({ ...values, [id]: value });
   };
-  const handleSubmit = async (event) => {
+
+  const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(action.login(values))
-    if(login){
-            Swal.fire({
-            title: 'Bienvenido ' + values.email,
-            imageUrl: Logo,
-            imageWidth: 200,
-            imageHeight: 200,
-            icon: 'success',
-            imageAlt: 'Logo',
-            showConfirmButton: false,
-            timer: 2500
-          })
-          redireccionar()
-    }else{
+    const user = users.filter(user=>{return user.email === values.email})
+    console.log('user',user)
+    console.log('values',values)
+    if (user[0].email == values.email) {
+      Swal.fire({
+        title: 'Bienvenido ' + values.email,
+        imageUrl: Logo,
+        imageWidth: 200,
+        imageHeight: 200,
+        icon: 'success',
+        imageAlt: 'Logo',
+        showConfirmButton: false,
+        timer: 2500
+      })
+      setTimeout(() => { window.location = "https://www.estudiomixto.com/" }, 3000)
+    } else {
       Swal.fire({
         icon: 'error',
         title: 'Oops...Algo salio mal!',
@@ -70,6 +69,9 @@ export default function Inicio() {
       })
     }
   };
+
+  useEffect(() => {
+  }, [values])
 
   return (
     <Container maxWidth="xs">

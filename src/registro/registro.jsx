@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import Swal from 'sweetalert2';
-import axios from 'axios'
 import { useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import * as action from '../redux/Action.js'
 import { useHistory } from "react-router-dom";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -29,7 +30,7 @@ import { useStyles } from '../styles.js'
 
 export default function Registro() {
   const classes = useStyles();
-
+  const dispatch = useDispatch();
   const [values, setValues] = useState({});
   const [validation, setValidation] = useState(true)
   const [validationEmail, setValidationEmail] = useState(true)
@@ -76,24 +77,17 @@ export default function Registro() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await axios.post(`${REACT_APP_BACKEND_URL}/register`, values)
-      .then(res => {
-        console.log("res", res)
-        if (res.ok) {
-          Swal.fire({
-            position: 'top',
-            icon: 'success',
-            title: 'Felicitaciones ',
-            text: 'Tu usuario se ha creado con exito',
-            footer: 'Ahora inicia sesion',
-            timer: 2500
-          })
-          setTimeout(() => { history.push('/') }, 2300);
-        }
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    dispatch(action.register(values))
+    Swal.fire({
+      position: 'top',
+      icon: 'success',
+      title: 'Felicitaciones ',
+      text: 'Tu usuario se ha creado con exito',
+      footer: 'Ahora inicia sesion',
+      timer: 2500
+    })
+
+    setTimeout(() => { history.push('/') }, 2300);
   }
   const handleClickOpen = () => {
     setOpen(true);
@@ -120,7 +114,7 @@ export default function Registro() {
           Registro
         </Typography>
         <Grid item>
-          <Link href="/inicio" variant="body1" className={classes.paper}>
+          <Link href="/ " variant="body1" className={classes.paper}>
             Ya tienes cuenta? Inicia sesion
         </Link>
         </Grid>
