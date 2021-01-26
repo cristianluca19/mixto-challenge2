@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { useState } from 'react';
-import { useDispatch, useSelector } from "react-redux";
-import * as action from '../redux/Action.js'
+import { useSelector } from "react-redux";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -23,7 +22,6 @@ import { useStyles } from '../styles.js'
 export default function Inicio() {
   const classes = useStyles();
   const users = useSelector((store) => store.users);
-  const [login, setLogin]= useState()
   const [values, setValues] = useState({email:'',password:''});
   const [valuePass, setValuePass] = useState({
     password: '',
@@ -46,8 +44,6 @@ export default function Inicio() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const user = users.filter(user=>{return user.email === values.email})
-    console.log('user',user)
-    console.log('values',values)
     if (user[0].email == values.email) {
       Swal.fire({
         title: 'Bienvenido ' + values.email,
